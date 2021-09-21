@@ -18,6 +18,7 @@ main = function()
   textpos = 2.4
   x=seq(a,b,h)
   ans=0
+  ymin=100000
   while(1){
     iter = iter + 1
     plot(x,f(x), type="l", col="red", lwd="2",
@@ -33,15 +34,21 @@ main = function()
     abline(b=bprime,a=a2)
     
     xinter = (a2-a1)/(aprime-bprime)
-    
-    points(xinter, y=f(xinter), lwd="2", pch=19)
-    lines(c(xinter,xinter),c(aprime*xinter + a1, f(xinter)),lty="dotted", lwd="3", col="blue")
+    finter = f(xinter)
+    if(finter < ymin){
+      xmin = xinter
+      ymin = finter
+    }
+    points(xinter, y=finter, lwd="2", pch=19)
+    lines(c(xinter,xinter),c(aprime*xinter + a1, finter),lty="dotted", lwd="3", col="blue")
     text(0.8,textpos,paste("Iteration number = ", iter), adj = c(0,0))
     text(0.8,textpos-0.2,paste("A = ", a), adj = c(0,0))
     text(0.8,textpos-0.4,paste("B = ", b), adj = c(0,0))
     text(0.8,textpos-0.6,paste("x = ", xinter), adj = c(0,0))
     text(0.8,textpos-0.8,paste("f'(x) = ", fprime(xinter)), adj = c(0,0))
-    text(0.8,textpos-1.0,paste("f(x) = ", f(xinter)), adj = c(0,0))
+    text(0.8,textpos-1.0,paste("f(x) = ", finter), adj = c(0,0))
+    text(1.5,textpos,paste("xmin = ", xmin), adj = c(0,0))
+    text(1.5,textpos-0.2,paste("ymin = ", ymin), adj = c(0,0))
     
     
     if(fprime(xinter) > E){
